@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import ChatWindow from "./components/ChatWindow.jsx";
-import "../App.css";
 
 const MODELS = [
   { id: "sonar-pro", label: "Sonar‑Pro" },
