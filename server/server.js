@@ -3,6 +3,11 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3500;
 const PPLX_API_KEY = process.env.PPLX_API_KEY;
@@ -14,6 +19,9 @@ if (!PPLX_API_KEY) {
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
+
+// Serve static files from the client build directory
+app.use(express.static(join(__dirname, '../client/dist')));
 
 // Simple proxy – prevents exposing the key to the browser
 app.post("/api/chat", async (req, res) => {
@@ -51,4 +59,9 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`🚀  proxy listening on http://localhost:${PORT}`));
+// Catch-all handler: send back React's index.html file for any non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '../client/dist/index.html'));
+});
+
+app.listen(PORT, () => console.log(`🚀  Server listening on http://localhost:${PORT}`));
