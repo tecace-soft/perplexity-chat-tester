@@ -1,0 +1,11 @@
+{
+    "name": "perplexity-chat-tester",
+    "private": true,
+    "workspaces": ["client", "server"],
+    "scripts": {
+      "dev": "concurrently \"npm --workspace server run dev\" \"npm --workspace client run dev\""
+    },
+    "devDependencies": {
+      "concurrently": "^8.2.0"
+    }
+  }
